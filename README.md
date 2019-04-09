@@ -14,7 +14,11 @@ Edit the *customize.bash* script to set the
 * SERIAL_NUMBER 
 * SOUND_CARD
 
-SOUND_CARD is the Alsa PCM device name for the voice playback.
+SOUND_CARD is the Alsa PCM device name for the voice capture.
+It can be listed with:
+```
+arecord -l
+```
 
 Then, launch the build:
 
