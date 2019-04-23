@@ -56,9 +56,9 @@ RUN echo "user ALL=(ALL) NOPASSWD: ALL" | tee -a /etc/sudoers
 ENV AGL_SDK_ARCH=aarch64
 ENV AGL_SDK_VERSION=7.90.0
 
-ARG AGL_SDK=poky-agl-glibc-x86_64-agl-demo-platform-crosssdk-${AGL_SDK_ARCH}-toolchain-${AGL_SDK_VERSION}+snapshot.sh
-
-RUN cd /home/user && wget -q https://iot.bzh/download/public/2019/Images/m3ulcb/iotbzh-demo-20190401044755/sdk/$AGL_SDK
+ARG AGL_SDK=poky-agl-glibc-x86_64-agl-image-minimal-crosssdk-${AGL_SDK_ARCH}-toolchain-${AGL_SDK_VERSION}+snapshot.sh
+ARG SDK_SITE=https://download.automotivelinux.org/AGL/snapshots/master/2019-04-23-b1121/m3ulcb-nogfx/deploy/sdk
+RUN cd /home/user && wget -q $SDK_SITE/$AGL_SDK
 
 # Install AGL SDK
 RUN cd /home/user && chmod a+x $AGL_SDK && ./$AGL_SDK -y
