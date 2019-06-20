@@ -14,6 +14,7 @@ If you have a snapshot of the amazonlite engine, please unzip it under the Alexa
 It will be automatically taken in by the build scripts.
 If you do not have it, the voice agent will be bult without wake word support.
 
+### Customize developer's ID and sound card
 
 Edit the *customize.bash* script to set the 
 * CLIENT_ID
