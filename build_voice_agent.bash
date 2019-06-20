@@ -11,7 +11,7 @@ fi
 voice_agent_src=/workdir/aac-sdk/platforms/agl/alexa-voiceagent-service
 
 if [ ! -d $voice_agent_src ]; then
-	cd /workdir && git clone --recursive ${AAC_REMOTE}
+	cd /workdir && git clone --recursive ${AAC_REMOTE} -b 1.6
 fi
 
 /home/user/customize.bash

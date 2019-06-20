@@ -54,15 +54,16 @@ RUN echo "user ALL=(ALL) NOPASSWD: ALL" | tee -a /etc/sudoers
 # Install AGL SDK
 
 ENV AGL_SDK_ARCH=aarch64
-ENV AGL_SDK_VERSION=7.90.0
+ENV AGL_SDK_VERSION=7.99.1
 
-ARG AGL_SDK=poky-agl-glibc-x86_64-agl-image-minimal-crosssdk-${AGL_SDK_ARCH}-toolchain-${AGL_SDK_VERSION}+snapshot.sh
-ARG SDK_SITE=https://download.automotivelinux.org/AGL/snapshots/master/2019-04-23-b1121/m3ulcb-nogfx/deploy/sdk
+ARG AGL_SDK=poky-agl-glibc-x86_64-agl-demo-platform-crosssdk-${AGL_SDK_ARCH}-toolchain-${AGL_SDK_VERSION}+snapshot.sh
+ARG SDK_SITE=https://download.automotivelinux.org/AGL/snapshots/master/latest/qemuarm64/deploy/sdk
 RUN cd /home/user && wget -q $SDK_SITE/$AGL_SDK
 
 # Install AGL SDK
 RUN cd /home/user && chmod a+x $AGL_SDK && ./$AGL_SDK -y
 
+ARG WWE=amazonlite
 
 USER user
 ENV DISPLAY=:0
@@ -75,22 +76,28 @@ ENV AAC_SDK_HOME=/home/user/aac-sdk
 
 ENV AAC_REMOTE=https://github.com/iotbzh/aac-sdk.git
 
-RUN cd ~ && git clone --recursive ${AAC_REMOTE}
+RUN cd ~ && git clone --recursive ${AAC_REMOTE} -b 1.6
 RUN cd ~ && git clone git://git.openembedded.org/openembedded-core oe-core -b rocko
 RUN cd ~/oe-core && git clone git://git.openembedded.org/bitbake -b 1.36
+
+RUN echo "Copy ${WWE}"
+
+RUN mkdir -p ${AAC_SDK_HOME}/extras/${WWE}
+COPY ${WWE} ${AAC_SDK_HOME}/extras/${WWE}
+
 
 
 ENV HOST_SDK_HOME=${AAC_SDK_HOME}
 
-RUN ${AAC_SDK_HOME}/builder/build.sh oe -t aglarm64  -DAGL_SDK=/opt/agl-sdk/${AGL_SDK_VERSION}+snapshot-${AGL_SDK_ARCH} ${AAC_SDK_HOME}/samples/audio
+RUN ${AAC_SDK_HOME}/builder/build.sh oe -t aglarm64  -DAGL_SDK=/opt/agl-sdk/${AGL_SDK_VERSION}+snapshot-${AGL_SDK_ARCH} ${AAC_SDK_HOME}/samples/audio ${AAC_SDK_HOME}/extras/amazonlite
 
 RUN cd ${AAC_SDK_HOME}/builder/deploy/aglarm64 && tar -xvf aac-image-minimal-aglarm64.tar.gz
 
 ENV AAC_INSTALL_ROOT=${AAC_SDK_HOME}/builder/deploy/aglarm64/opt/AAC
 
-#RUN xterm
 
 RUN bash
+
 
 COPY build_voice_agent.bash /home/user
 COPY customize.bash /home/user

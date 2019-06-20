@@ -8,6 +8,13 @@ git clone https://github.com/iotbzh/AlexaDocker.git
 cd AlexaDocker
 ```
 
+### Proprietary wake word engine (amazonlite)
+
+If you have a snapshot of the amazonlite engine, please unzip it under the AlexaDocker directory.
+It will be automatically taken in by the build scripts.
+If you do not have it, the voice agent will be bult without wake word support.
+
+
 Edit the *customize.bash* script to set the 
 * CLIENT_ID
 * PRODUCT_NAME
@@ -23,7 +30,7 @@ arecord -l
 Then, launch the build:
 
 ```
-docker build --network=host --build-arg=uid=$(id -u) -t alexa .
+./build.bash
 ```
 
 That will take quite a long time (~25 minutes)
@@ -31,10 +38,10 @@ That will take quite a long time (~25 minutes)
 
 ## Build the voice agent
 
-Lanuch the container:
+Launch the container:
 
 ```
-docker run -it  --network=host --tmpfs /tmp  -e DISPLAY=$DISPLAY --security-opt=label:type:spc_t --user=$(id -u):$(id -g) -v /tmp/.X11-unix/X0:/tmp/.X11-unix/X0 -v $HOME/workdir:/workdir  --rm alexa
+./run.bash
 ```
 
 In the container; launch:
