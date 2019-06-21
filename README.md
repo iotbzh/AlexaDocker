@@ -10,11 +10,13 @@ cd AlexaDocker
 
 ### Proprietary wake word engine (amazonlite)
 
-If you have a snapshot of the amazonlite engine, please unzip it under the AlexaDocker directory.
-It will be automatically taken in by the build scripts.
-If you do not have it, the voice agent will be bult without wake word support.
+The usage of amazonlite is optional, and depends on the value **HAVE_AMAZONLITE** in the *build.conf* file.
+When setting **HAVE_AMAZONLITE** to **Y**, you must either have a copy of snapshot of the amazonlite package
+under the *AlexaDocker* directory, or an SSH access to the private code.iot.bzh/amazonlite repository.
 
-### Customize developer's ID and sound card
+When setting **HAVE_AMAZONLITE** to **N**, the voice agent will be built without wake word support.
+
+### Customize the product IDs and sound card
 
 Edit the *customize.bash* script to set the 
 * CLIENT_ID

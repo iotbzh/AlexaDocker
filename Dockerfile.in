@@ -63,7 +63,6 @@ RUN cd /home/user && wget -q $SDK_SITE/$AGL_SDK
 # Install AGL SDK
 RUN cd /home/user && chmod a+x $AGL_SDK && ./$AGL_SDK -y
 
-ARG WWE=amazonlite
 
 USER user
 ENV DISPLAY=:0
@@ -80,16 +79,11 @@ RUN cd ~ && git clone --recursive ${AAC_REMOTE} -b 1.6
 RUN cd ~ && git clone git://git.openembedded.org/openembedded-core oe-core -b rocko
 RUN cd ~/oe-core && git clone git://git.openembedded.org/bitbake -b 1.36
 
-RUN echo "Copy ${WWE}"
-
-RUN mkdir -p ${AAC_SDK_HOME}/extras/${WWE}
-COPY ${WWE} ${AAC_SDK_HOME}/extras/${WWE}
-
-
+%AMAZONLITE%
 
 ENV HOST_SDK_HOME=${AAC_SDK_HOME}
 
-RUN ${AAC_SDK_HOME}/builder/build.sh oe -t aglarm64  -DAGL_SDK=/opt/agl-sdk/${AGL_SDK_VERSION}+snapshot-${AGL_SDK_ARCH} ${AAC_SDK_HOME}/samples/audio ${AAC_SDK_HOME}/extras/amazonlite
+RUN ${AAC_SDK_HOME}/builder/build.sh oe -t aglarm64  -DAGL_SDK=/opt/agl-sdk/${AGL_SDK_VERSION}+snapshot-${AGL_SDK_ARCH} ${AAC_SDK_HOME}/samples/audio ${AMAZONLITE}
 
 RUN cd ${AAC_SDK_HOME}/builder/deploy/aglarm64 && tar -xvf aac-image-minimal-aglarm64.tar.gz
 
