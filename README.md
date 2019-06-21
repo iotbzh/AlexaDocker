@@ -53,9 +53,11 @@ In the container; launch:
 ./build_voice_agent.bash
 ```
 
+Exit the container.
+
 The generated widget is at:
 
-*/workdir/voice_agent_build*
+*~/workdir/voice_agent_build/alexa-voiceagent-service-debug.wgt*
 
 Copy the widget on the target machine on /tmp.
 
